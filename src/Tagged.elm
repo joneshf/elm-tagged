@@ -4,7 +4,7 @@ module Tagged exposing (..)
 
 A module that allows you to "tag" a value.
 
-@docs Tagged, tag, retag, untag, map, ap, bind, extend
+@docs Tagged, tag, retag, untag, map, ap, map2, bind, extend
 -}
 
 {-|
@@ -49,6 +49,18 @@ foo =
 ap : Tagged tag (oldValue -> newValue) -> Tagged tag oldValue -> Tagged tag newValue
 ap (Tagged f) (Tagged x) =
   Tagged (f x)
+
+{-|
+An alternative to `ap`:
+
+```elm
+foo =
+  map2 Array.get index arr
+```
+-}
+map2 : (a -> b -> c) -> Tagged tag a -> Tagged tag b -> Tagged tag c
+map2 f t1 t2 =
+  ap (map f t1) t2
 
 {-|
 Useful for restricting the tag created in a polymorphic function.
