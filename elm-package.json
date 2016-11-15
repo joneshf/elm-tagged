@@ -7,7 +7,8 @@
         "src"
     ],
     "exposed-modules": [
-        "Tagged"
+        "Tagged",
+        "Tagged.Dict"
     ],
     "dependencies": {
         "elm-lang/core": "4.0.4 <= v < 5.0.0"
