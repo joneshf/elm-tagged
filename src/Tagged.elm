@@ -25,10 +25,10 @@ tag =
     Tagged
 
 
-{-| Useful for composing functions together infix:
+{-| Useful for composing functions together in a pipeline:
 
     foo =
-        Array.set `map` index `ap` value `ap` arr
+        Array.set |> map index |> ap value |> ap arr
 
 -}
 map : (oldValue -> newValue) -> Tagged tag oldValue -> Tagged tag newValue
@@ -36,10 +36,10 @@ map f (Tagged x) =
     Tagged (f x)
 
 
-{-| Useful for composing functions together infix:
+{-| Useful for composing functions together in a pipeline:
 
     foo =
-        Array.set `map` index `ap` value `ap` arr
+        Array.set |> map index |> ap value |> ap arr
 
 -}
 ap : Tagged tag (oldValue -> newValue) -> Tagged tag oldValue -> Tagged tag newValue
