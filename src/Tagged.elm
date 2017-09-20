@@ -2,7 +2,7 @@ module Tagged exposing (..)
 
 {-| A module that allows you to "tag" a value.
 
-@docs Tagged, tag, retag, untag, map, ap, map2, bind, extend
+@docs Tagged, tag, retag, untag, map, andMap, map2, andThen, extend
 
 -}
 
@@ -28,7 +28,7 @@ tag =
 {-| Useful for composing functions together in a pipeline:
 
     foo =
-        Array.set |> map index |> ap value |> ap arr
+        Array.set |> map index |> andMap value |> andMap arr
 
 -}
 map : (oldValue -> newValue) -> Tagged tag oldValue -> Tagged tag newValue
@@ -39,15 +39,15 @@ map f (Tagged x) =
 {-| Useful for composing functions together in a pipeline:
 
     foo =
-        Array.set |> map index |> ap value |> ap arr
+        Array.set |> map index |> andMap value |> andMap arr
 
 -}
-ap : Tagged tag (oldValue -> newValue) -> Tagged tag oldValue -> Tagged tag newValue
-ap (Tagged f) (Tagged x) =
+andMap : Tagged tag (oldValue -> newValue) -> Tagged tag oldValue -> Tagged tag newValue
+andMap (Tagged f) (Tagged x) =
     Tagged (f x)
 
 
-{-| An alternative to `ap`:
+{-| An alternative to `andMap`:
 
     foo =
         map2 Array.get index arr
@@ -55,13 +55,13 @@ ap (Tagged f) (Tagged x) =
 -}
 map2 : (a -> b -> c) -> Tagged tag a -> Tagged tag b -> Tagged tag c
 map2 f t1 t2 =
-    ap (map f t1) t2
+    andMap (map f t1) t2
 
 
 {-| Useful for restricting the tag created in a polymorphic function.
 -}
-bind : (oldValue -> Tagged tag newValue) -> Tagged tag oldValue -> Tagged tag newValue
-bind f (Tagged x) =
+andThen : (oldValue -> Tagged tag newValue) -> Tagged tag oldValue -> Tagged tag newValue
+andThen f (Tagged x) =
     f x
 
 
