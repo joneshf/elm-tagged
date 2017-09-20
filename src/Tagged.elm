@@ -25,10 +25,10 @@ tag =
     Tagged
 
 
-{-| Useful for composing functions together in a pipeline:
+{-| Useful for applying a function on a `Tagged` value.
 
     foo =
-        Array.set |> map index |> andMap value |> andMap arr
+        aTaggedString |> map String.toUpper
 
 -}
 map : (oldValue -> newValue) -> Tagged tag oldValue -> Tagged tag newValue
@@ -39,11 +39,14 @@ map f (Tagged x) =
 {-| Useful for composing functions together in a pipeline:
 
     foo =
-        Array.set |> map index |> andMap value |> andMap arr
+        tagged Array.set
+            |> andMap index
+            |> andMap value
+            |> andMap arr
 
 -}
-andMap : Tagged tag (oldValue -> newValue) -> Tagged tag oldValue -> Tagged tag newValue
-andMap (Tagged f) (Tagged x) =
+andMap : Tagged tag oldValue -> Tagged tag (oldValue -> newValue) -> Tagged tag newValue
+andMap (Tagged x) (Tagged f) =
     Tagged (f x)
 
 
@@ -55,7 +58,7 @@ andMap (Tagged f) (Tagged x) =
 -}
 map2 : (a -> b -> c) -> Tagged tag a -> Tagged tag b -> Tagged tag c
 map2 f t1 t2 =
-    andMap (map f t1) t2
+    map f t1 |> andMap t2
 
 
 {-| Useful for restricting the tag created in a polymorphic function.
