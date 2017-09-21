@@ -1,5 +1,7 @@
 # elm-tagged
 
+[![Build Status](https://travis-ci.org/joneshf/elm-tagged.svg?branch=master)](https://travis-ci.org/joneshf/elm-tagged)
+
 A library that allows you to "tag" a value with a specific type for compile time verification.
 
 The semantics associated with the value do not change.
