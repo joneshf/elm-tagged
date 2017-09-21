@@ -1,0 +1,22 @@
+{
+  "name": "elm-tagged",
+  "version": "1.1.1",
+  "description": "A library to help with compile time verification",
+  "main": "index.js",
+  "scripts": {
+    "test": "elm-package install -y && elm-make"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joneshf/elm-tagged.git"
+  },
+  "author": "Hardy Jones <jones3.hardy@gmail.com>",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/joneshf/elm-tagged/issues"
+  },
+  "homepage": "https://github.com/joneshf/elm-tagged#readme",
+  "devDependencies": {
+    "elm": "^0.18.0"
+  }
+}
