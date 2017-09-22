@@ -65,8 +65,8 @@ andMap (Tagged x) (Tagged f) =
 
 -}
 map2 : (a -> b -> c) -> Tagged tag a -> Tagged tag b -> Tagged tag c
-map2 f t1 t2 =
-    map f t1 |> andMap t2
+map2 f (Tagged x) (Tagged y) =
+    Tagged (f x y)
 
 
 {-| Useful for restricting the tag created in a polymorphic function.
