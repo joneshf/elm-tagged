@@ -2,7 +2,15 @@ module Tagged exposing (..)
 
 {-| A module that allows you to "tag" a value.
 
-@docs Tagged, tag, retag, untag, map, andMap, map2, andThen, extend
+@docs Tagged
+@docs tag
+@docs retag
+@docs untag
+@docs map
+@docs andMap
+@docs map2
+@docs andThen
+@docs extend
 
 -}
 
