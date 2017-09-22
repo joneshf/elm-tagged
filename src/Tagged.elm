@@ -7,8 +7,10 @@ module Tagged exposing (..)
 @docs retag
 @docs untag
 @docs map
-@docs andMap
+@docs ap
 @docs map2
+@docs andMap
+@docs bind
 @docs andThen
 @docs extend
 
@@ -36,7 +38,7 @@ tag =
 {-| Useful for applying a function on a `Tagged` value.
 
     foo =
-        aTaggedString |> map String.toUpper
+        map String.toUpper aTaggedString
 
 -}
 map : (oldValue -> newValue) -> Tagged tag oldValue -> Tagged tag newValue
@@ -44,10 +46,26 @@ map f (Tagged x) =
     Tagged (f x)
 
 
+{-| Useful for building more useful functions:
+
+    map f =
+        ap (Tagged f)
+
+    map2 f x =
+        ap (map f x)
+
+    map3 f x y =
+        ap (map2 f x y)
+
+-}
+ap : Tagged tag (oldValue -> newValue) -> Tagged tag oldValue -> Tagged tag newValue
+ap (Tagged f) (Tagged x) =
+    Tagged (f x)
+
 {-| Useful for composing functions together in a pipeline:
 
     foo =
-        tagged Array.set
+        Tagged Array.set
             |> andMap index
             |> andMap value
             |> andMap arr
@@ -58,7 +76,7 @@ andMap (Tagged x) (Tagged f) =
     Tagged (f x)
 
 
-{-| An alternative to `andMap`:
+{-| An alternative to `ap`:
 
     foo =
         map2 Array.get index arr
@@ -75,13 +93,19 @@ andThen : (oldValue -> Tagged tag newValue) -> Tagged tag oldValue -> Tagged tag
 andThen f (Tagged x) =
     f x
 
+{-| Useful for restricting the tag created in a polymorphic function.
+-}
+bind : Tagged tag oldValue -> (oldValue -> Tagged tag newValue) -> Tagged tag newValue
+bind (Tagged x) f =
+    f x
+
 
 {-| Useful when you have a function that throws away a tag prematurely,
 but you still need the tag later.
 -}
 extend : (Tagged tag oldValue -> newValue) -> Tagged tag oldValue -> Tagged tag newValue
 extend f x =
-    tag (f x)
+    Tagged (f x)
 
 
 {-| Explicitly changes the tag of a value.
