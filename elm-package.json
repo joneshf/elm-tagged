@@ -1,5 +1,5 @@
 {
-    "version": "2.0.0",
+    "version": "2.1.0",
     "summary": "A library to help with compile time verification",
     "repository": "https://github.com/joneshf/elm-tagged.git",
     "license": "BSD3",
