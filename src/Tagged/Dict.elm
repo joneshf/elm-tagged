@@ -16,12 +16,12 @@ Most functions here are simple wrappers to refine the types without modifying th
 
 # Build
 
-@docs empty, singleton, insert
+@docs empty, singleton, insert, update, remove
 
 
 # Query
 
-@docs update, remove, isEmpty, member, get, size
+@docs isEmpty, member, get, size
 
 
 # Lists
