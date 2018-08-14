@@ -218,7 +218,7 @@ partition f dict =
         ( dict1, dict2 ) =
             Dict.partition (f << tag) (untag dict)
     in
-    ( tag dict1, tag dict2 )
+        ( tag dict1, tag dict2 )
 
 
 {-| Combine two dictionaries. If there is a collision, preference is given to the first dictionary.
