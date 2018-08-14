@@ -55,112 +55,112 @@ type alias TaggedDict a b c =
 
 {-| Create an empty dictionary.
 -}
-empty : TaggedDict k comparable v
+empty : TaggedDict tag comparable v
 empty =
     tag Dict.empty
 
 
 {-| Create a dictionary with one key-value pair.
 -}
-singleton : Tagged k comparable -> v -> TaggedDict k comparable v
+singleton : Tagged tag comparable -> v -> TaggedDict tag comparable v
 singleton k =
     tag << Dict.singleton (untag k)
 
 
 {-| Insert a key-value pair into a dictionary. Replaces value when there is a collision.
 -}
-insert : Tagged k comparable -> v -> TaggedDict k comparable v -> TaggedDict k comparable v
+insert : Tagged tag comparable -> v -> TaggedDict tag comparable v -> TaggedDict tag comparable v
 insert k =
     Tagged.map << Dict.insert (untag k)
 
 
 {-| Update the value of a dictionary for a specific key with a given function.
 -}
-update : Tagged k comparable -> (Maybe v -> Maybe v) -> TaggedDict k comparable v -> TaggedDict k comparable v
+update : Tagged tag comparable -> (Maybe v -> Maybe v) -> TaggedDict tag comparable v -> TaggedDict tag comparable v
 update k =
     Tagged.map << Dict.update (untag k)
 
 
 {-| Remove a key-value pair from a dictionary. If the key is not found, no changes are made.
 -}
-remove : Tagged k comparable -> TaggedDict k comparable v -> TaggedDict k comparable v
+remove : Tagged tag comparable -> TaggedDict tag comparable v -> TaggedDict tag comparable v
 remove =
     Tagged.map << Dict.remove << untag
 
 
 {-| Determine if a dictionary is empty.
 -}
-isEmpty : TaggedDict k c v -> Bool
+isEmpty : TaggedDict tag c v -> Bool
 isEmpty =
     Dict.isEmpty << untag
 
 
 {-| Determine if a key is in a dictionary.
 -}
-member : Tagged k comparable -> TaggedDict k comparable v -> Bool
+member : Tagged tag comparable -> TaggedDict tag comparable v -> Bool
 member k =
     Dict.member (untag k) << untag
 
 
 {-| Get the value associated with a key.
 -}
-get : Tagged k comparable -> TaggedDict k comparable v -> Maybe v
+get : Tagged tag comparable -> TaggedDict tag comparable v -> Maybe v
 get k =
     Dict.get (untag k) << untag
 
 
 {-| Determine the number of key-value pairs in the dictionary.
 -}
-size : TaggedDict k c v -> Int
+size : TaggedDict tag c v -> Int
 size =
     Dict.size << untag
 
 
 {-| Get all of the untagged keys in a dictionary, sorted from lowest to highest.
 -}
-untaggedKeys : TaggedDict k comparable v -> List comparable
+untaggedKeys : TaggedDict tag comparable v -> List comparable
 untaggedKeys =
     Dict.keys << untag
 
 
 {-| Get all of the keys in a dictionary, sorted from lowest to highest.
 -}
-keys : TaggedDict k comparable v -> List (Tagged k comparable)
+keys : TaggedDict tag comparable v -> List (Tagged tag comparable)
 keys =
     List.map tag << untaggedKeys
 
 
 {-| Get all of the values in a dictionary, in the order of their keys.
 -}
-values : TaggedDict k comparable v -> List v
+values : TaggedDict tag comparable v -> List v
 values =
     Dict.values << untag
 
 
 {-| Convert a dictionary into an association list of untagged key-value pairs, sorted by keys.
 -}
-toUntaggedList : TaggedDict k comparable v -> List ( comparable, v )
+toUntaggedList : TaggedDict tag comparable v -> List ( comparable, v )
 toUntaggedList =
     Dict.toList << untag
 
 
 {-| Convert an untagged association list into a dictionary.
 -}
-fromUntaggedList : List ( comparable, v ) -> TaggedDict k comparable v
+fromUntaggedList : List ( comparable, v ) -> TaggedDict tag comparable v
 fromUntaggedList =
     tag << Dict.fromList
 
 
 {-| Convert a dictionary into an association list of key-value pairs, sorted by keys.
 -}
-toList : TaggedDict k comparable v -> List ( Tagged k comparable, v )
+toList : TaggedDict tag comparable v -> List ( Tagged tag comparable, v )
 toList =
     List.map (\( c, v ) -> ( tag c, v )) << toUntaggedList
 
 
 {-| Convert an association list into a dictionary.
 -}
-fromList : List ( Tagged k comparable, v ) -> TaggedDict k comparable v
+fromList : List ( Tagged tag comparable, v ) -> TaggedDict tag comparable v
 fromList =
     fromUntaggedList << List.map (\( k, v ) -> ( untag k, v ))
 
@@ -168,9 +168,9 @@ fromList =
 {-| Apply a function to all values in a dictionary.
 -}
 map :
-    (Tagged k comparable -> a -> b)
-    -> TaggedDict k comparable a
-    -> TaggedDict k comparable b
+    (Tagged tag comparable -> a -> b)
+    -> TaggedDict tag comparable a
+    -> TaggedDict tag comparable b
 map f =
     Tagged.map (Dict.map (f << tag))
 
@@ -178,9 +178,9 @@ map f =
 {-| Fold over the key-value pairs in a dictionary, in order from lowest key to highest key.
 -}
 foldl :
-    (Tagged k comparable -> v -> b -> b)
+    (Tagged tag comparable -> v -> b -> b)
     -> b
-    -> TaggedDict k comparable v
+    -> TaggedDict tag comparable v
     -> b
 foldl f z =
     Dict.foldl (f << tag) z << untag
@@ -189,9 +189,9 @@ foldl f z =
 {-| Fold over the key-value pairs in a dictionary, in order from highest key to lowest key.
 -}
 foldr :
-    (Tagged k comparable -> v -> b -> b)
+    (Tagged tag comparable -> v -> b -> b)
     -> b
-    -> TaggedDict k comparable v
+    -> TaggedDict tag comparable v
     -> b
 foldr f z =
     Dict.foldr (f << tag) z << untag
@@ -200,9 +200,9 @@ foldr f z =
 {-| Keep a key-value pair when it satisfies a predicate.
 -}
 filter :
-    (Tagged k comparable -> v -> Bool)
-    -> TaggedDict k comparable v
-    -> TaggedDict k comparable v
+    (Tagged tag comparable -> v -> Bool)
+    -> TaggedDict tag comparable v
+    -> TaggedDict tag comparable v
 filter f =
     Tagged.map (Dict.filter (f << tag))
 
@@ -210,9 +210,9 @@ filter f =
 {-| Partition a dictionary according to a predicate. The first dictionary contains all key-value pairs which satisfy the predicate, and the second contains the rest.
 -}
 partition :
-    (Tagged k comparable -> v -> Bool)
-    -> TaggedDict k comparable v
-    -> ( TaggedDict k comparable v, TaggedDict k comparable v )
+    (Tagged tag comparable -> v -> Bool)
+    -> TaggedDict tag comparable v
+    -> ( TaggedDict tag comparable v, TaggedDict tag comparable v )
 partition f dict =
     let
         ( dict1, dict2 ) =
@@ -224,9 +224,9 @@ partition f dict =
 {-| Combine two dictionaries. If there is a collision, preference is given to the first dictionary.
 -}
 union :
-    TaggedDict k comparable v
-    -> TaggedDict k comparable v
-    -> TaggedDict k comparable v
+    TaggedDict tag comparable v
+    -> TaggedDict tag comparable v
+    -> TaggedDict tag comparable v
 union =
     Tagged.map2 Dict.union
 
@@ -234,9 +234,9 @@ union =
 {-| Keep a key-value pair when its key appears in the second dictionary. Preference is given to values in the first dictionary.
 -}
 intersect :
-    TaggedDict k comparable v
-    -> TaggedDict k comparable v
-    -> TaggedDict k comparable v
+    TaggedDict tag comparable v
+    -> TaggedDict tag comparable v
+    -> TaggedDict tag comparable v
 intersect =
     Tagged.map2 Dict.intersect
 
@@ -244,9 +244,9 @@ intersect =
 {-| Keep a key-value pair when its key does not appear in the second dictionary.
 -}
 diff :
-    TaggedDict k comparable v
-    -> TaggedDict k comparable v
-    -> TaggedDict k comparable v
+    TaggedDict tag comparable v
+    -> TaggedDict tag comparable v
+    -> TaggedDict tag comparable v
 diff =
     Tagged.map2 Dict.diff
 
@@ -254,11 +254,11 @@ diff =
 {-| The most general way of combining two dictionaries.
 -}
 merge :
-    (Tagged k comparable -> a -> result -> result)
-    -> (Tagged k comparable -> a -> b -> result -> result)
-    -> (Tagged k comparable -> b -> result -> result)
-    -> TaggedDict k comparable a
-    -> TaggedDict k comparable b
+    (Tagged tag comparable -> a -> result -> result)
+    -> (Tagged tag comparable -> a -> b -> result -> result)
+    -> (Tagged tag comparable -> b -> result -> result)
+    -> TaggedDict tag comparable a
+    -> TaggedDict tag comparable b
     -> result
     -> result
 merge f g h dict1 dict2 =
