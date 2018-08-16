@@ -49,83 +49,83 @@ import Tagged exposing (..)
 The constraint is phantom in that it doesn't show up at runtime.
 
 -}
-type alias TaggedSet a comparable =
-    Tagged a (Set comparable)
+type alias TaggedSet tag comparable =
+    Tagged tag (Set comparable)
 
 
 {-| Create an empty set.
 -}
-empty : TaggedSet k comparable
+empty : TaggedSet tag comparable
 empty =
     tag Set.empty
 
 
 {-| Create a set with one value.
 -}
-singleton : Tagged k comparable -> TaggedSet k comparable
+singleton : Tagged tag comparable -> TaggedSet tag comparable
 singleton =
     tag << Set.singleton << untag
 
 
 {-| Insert a value pair into a set.
 -}
-insert : Tagged k comparable -> TaggedSet k comparable -> TaggedSet k comparable
+insert : Tagged tag comparable -> TaggedSet tag comparable -> TaggedSet tag comparable
 insert =
     Tagged.map << Set.insert << untag
 
 
 {-| Remove a value from a set. If the value is not found, no changes are made.
 -}
-remove : Tagged k comparable -> TaggedSet k comparable -> TaggedSet k comparable
+remove : Tagged tag comparable -> TaggedSet tag comparable -> TaggedSet tag comparable
 remove =
     Tagged.map << Set.remove << untag
 
 
 {-| Determine if a set is empty.
 -}
-isEmpty : TaggedSet k c -> Bool
+isEmpty : TaggedSet tag c -> Bool
 isEmpty =
     Set.isEmpty << untag
 
 
 {-| Determine if a value is in a set.
 -}
-member : Tagged k comparable -> TaggedSet k comparable -> Bool
-member k =
-    Set.member (untag k) << untag
+member : Tagged tag comparable -> TaggedSet tag comparable -> Bool
+member v =
+    Set.member (untag v) << untag
 
 
 {-| Determine the number of values in a set.
 -}
-size : TaggedSet k c -> Int
+size : TaggedSet tag c -> Int
 size =
     Set.size << untag
 
 
 {-| Convert a set into a sorted list of untagged values.
 -}
-toUntaggedList : TaggedSet k comparable -> List comparable
+toUntaggedList : TaggedSet tag comparable -> List comparable
 toUntaggedList =
     Set.toList << untag
 
 
 {-| Convert an untagged list into a set.
 -}
-fromUntaggedList : List comparable -> TaggedSet k comparable
+fromUntaggedList : List comparable -> TaggedSet tag comparable
 fromUntaggedList =
     tag << Set.fromList
 
 
 {-| Convert a set into a sorted list of tagged values.
 -}
-toList : TaggedSet k comparable -> List (Tagged k comparable)
+toList : TaggedSet tag comparable -> List (Tagged tag comparable)
 toList =
     List.map (\c -> tag c) << toUntaggedList
 
 
 {-| Convert a list into a set.
 -}
-fromList : List (Tagged k comparable) -> TaggedSet k comparable
+fromList : List (Tagged tag comparable) -> TaggedSet tag comparable
 fromList =
     fromUntaggedList << List.map (\c -> untag c)
 
@@ -133,9 +133,9 @@ fromList =
 {-| Apply a function to all values in a set.
 -}
 map :
-    (Tagged k comparable -> comparable2)
-    -> TaggedSet k comparable
-    -> TaggedSet k comparable2
+    (Tagged tag comparable -> comparable2)
+    -> TaggedSet tag comparable
+    -> TaggedSet tag comparable2
 map f =
     Tagged.map (Set.map (f << tag))
 
@@ -143,9 +143,9 @@ map f =
 {-| Fold over the values in a set, in order from lowest value to highest value.
 -}
 foldl :
-    (Tagged k comparable -> b -> b)
+    (Tagged tag comparable -> b -> b)
     -> b
-    -> TaggedSet k comparable
+    -> TaggedSet tag comparable
     -> b
 foldl f z =
     Set.foldl (f << tag) z << untag
@@ -154,9 +154,9 @@ foldl f z =
 {-| Fold over the values in a set, in order from highest value to lowest value.
 -}
 foldr :
-    (Tagged k comparable -> b -> b)
+    (Tagged tag comparable -> b -> b)
     -> b
-    -> TaggedSet k comparable
+    -> TaggedSet tag comparable
     -> b
 foldr f z =
     Set.foldr (f << tag) z << untag
@@ -165,9 +165,9 @@ foldr f z =
 {-| Create a new set consisting only of elements which satisfy a predicate.
 -}
 filter :
-    (Tagged k comparable -> Bool)
-    -> TaggedSet k comparable
-    -> TaggedSet k comparable
+    (Tagged tag comparable -> Bool)
+    -> TaggedSet tag comparable
+    -> TaggedSet tag comparable
 filter f =
     Tagged.map (Set.filter (f << tag))
 
@@ -175,23 +175,23 @@ filter f =
 {-| Create two new sets; the first consisting of elements which satisfy a predicate, the second consisting of elements which do not.
 -}
 partition :
-    (Tagged k comparable -> Bool)
-    -> TaggedSet k comparable
-    -> ( TaggedSet k comparable, TaggedSet k comparable )
+    (Tagged tag comparable -> Bool)
+    -> TaggedSet tag comparable
+    -> ( TaggedSet tag comparable, TaggedSet tag comparable )
 partition f set =
     let
         ( set1, set2 ) =
             Set.partition (f << tag) (untag set)
     in
-    ( tag set1, tag set2 )
+        ( tag set1, tag set2 )
 
 
 {-| Get the union of two sets. Keep all values.
 -}
 union :
-    TaggedSet k comparable
-    -> TaggedSet k comparable
-    -> TaggedSet k comparable
+    TaggedSet tag comparable
+    -> TaggedSet tag comparable
+    -> TaggedSet tag comparable
 union =
     Tagged.map2 Set.union
 
@@ -199,9 +199,9 @@ union =
 {-| Get the intersection of two sets. Keeps values that appear in both sets.
 -}
 intersect :
-    TaggedSet k comparable
-    -> TaggedSet k comparable
-    -> TaggedSet k comparable
+    TaggedSet tag comparable
+    -> TaggedSet tag comparable
+    -> TaggedSet tag comparable
 intersect =
     Tagged.map2 Set.intersect
 
@@ -209,8 +209,8 @@ intersect =
 {-| Get the difference between the first set and the second. Keeps values that do not appear in the second set.
 -}
 diff :
-    TaggedSet k comparable
-    -> TaggedSet k comparable
-    -> TaggedSet k comparable
+    TaggedSet tag comparable
+    -> TaggedSet tag comparable
+    -> TaggedSet tag comparable
 diff =
     Tagged.map2 Set.diff
