@@ -4,7 +4,7 @@
   "description": "A library to help with compile time verification",
   "main": "index.js",
   "scripts": {
-    "test": "elm-package install -y && elm-make"
+    "test": "elm make"
   },
   "repository": {
     "type": "git",
@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/joneshf/elm-tagged#readme",
   "devDependencies": {
-    "elm": "^0.18.0"
+    "elm": "0.19.0-bugfix2"
   }
 }
