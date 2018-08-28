@@ -1,4 +1,17 @@
-module Tagged exposing (..)
+module Tagged
+    exposing
+        ( Tagged(..)
+        , andMap
+        , andThen
+        , ap
+        , bind
+        , extend
+        , map
+        , map2
+        , retag
+        , tag
+        , untag
+        )
 
 {-| A module that allows you to "tag" a value.
 
@@ -62,6 +75,7 @@ ap : Tagged tag (oldValue -> newValue) -> Tagged tag oldValue -> Tagged tag newV
 ap (Tagged f) (Tagged x) =
     Tagged (f x)
 
+
 {-| Useful for composing functions together in a pipeline:
 
     foo =
@@ -92,6 +106,7 @@ map2 f (Tagged x) (Tagged y) =
 andThen : (oldValue -> Tagged tag newValue) -> Tagged tag oldValue -> Tagged tag newValue
 andThen f (Tagged x) =
     f x
+
 
 {-| Useful for restricting the tag created in a polymorphic function.
 -}

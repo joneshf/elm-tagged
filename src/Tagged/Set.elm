@@ -1,4 +1,26 @@
-module Tagged.Set exposing (..)
+module Tagged.Set
+    exposing
+        ( TaggedSet
+        , diff
+        , empty
+        , filter
+        , foldl
+        , foldr
+        , fromList
+        , fromUntaggedList
+        , insert
+        , intersect
+        , isEmpty
+        , map
+        , member
+        , partition
+        , remove
+        , singleton
+        , size
+        , toList
+        , toUntaggedList
+        , union
+        )
 
 {-| A module that allows tagging sets, while maintaining an API parallel to `Set`.
 

@@ -1,4 +1,32 @@
-module Tagged.Dict exposing (..)
+module Tagged.Dict
+    exposing
+        ( TaggedDict
+        , diff
+        , empty
+        , filter
+        , foldl
+        , foldr
+        , fromList
+        , fromUntaggedList
+        , get
+        , insert
+        , intersect
+        , isEmpty
+        , keys
+        , map
+        , member
+        , merge
+        , partition
+        , remove
+        , singleton
+        , size
+        , toList
+        , toUntaggedList
+        , union
+        , untaggedKeys
+        , update
+        , values
+        )
 
 {-| A module that allows tagging dictionaries, while maintaining an API parallel to `Dict`.
 
