@@ -4,7 +4,7 @@
   "description": "A library to help with compile time verification",
   "main": "index.js",
   "scripts": {
-    "test": "elm-package install -y && elm-make"
+    "test": "elm make"
   },
   "repository": {
     "type": "git",
