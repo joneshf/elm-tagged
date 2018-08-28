@@ -1,4 +1,26 @@
-module Tagged.Set exposing (..)
+module Tagged.Set
+    exposing
+        ( TaggedSet
+        , diff
+        , empty
+        , filter
+        , foldl
+        , foldr
+        , fromList
+        , fromUntaggedList
+        , insert
+        , intersect
+        , isEmpty
+        , map
+        , member
+        , partition
+        , remove
+        , singleton
+        , size
+        , toList
+        , toUntaggedList
+        , union
+        )
 
 {-| A module that allows tagging sets, while maintaining an API parallel to `Set`.
 
@@ -183,7 +205,7 @@ partition f set =
         ( set1, set2 ) =
             Set.partition (f << tag) (untag set)
     in
-        ( tag set1, tag set2 )
+    ( tag set1, tag set2 )
 
 
 {-| Get the union of two sets. Keep all values.

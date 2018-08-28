@@ -1,4 +1,32 @@
-module Tagged.Dict exposing (..)
+module Tagged.Dict
+    exposing
+        ( TaggedDict
+        , diff
+        , empty
+        , filter
+        , foldl
+        , foldr
+        , fromList
+        , fromUntaggedList
+        , get
+        , insert
+        , intersect
+        , isEmpty
+        , keys
+        , map
+        , member
+        , merge
+        , partition
+        , remove
+        , singleton
+        , size
+        , toList
+        , toUntaggedList
+        , union
+        , untaggedKeys
+        , update
+        , values
+        )
 
 {-| A module that allows tagging dictionaries, while maintaining an API parallel to `Dict`.
 
@@ -218,7 +246,7 @@ partition f dict =
         ( dict1, dict2 ) =
             Dict.partition (f << tag) (untag dict)
     in
-        ( tag dict1, tag dict2 )
+    ( tag dict1, tag dict2 )
 
 
 {-| Combine two dictionaries. If there is a collision, preference is given to the first dictionary.
