@@ -3,7 +3,7 @@
     "name": "joneshf/elm-tagged",
     "summary": "A library to help with compile time verification",
     "license": "BSD-3-Clause",
-    "version": "2.1.0",
+    "version": "2.1.1",
     "exposed-modules": [
         "Tagged",
         "Tagged.Dict",
